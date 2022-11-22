@@ -28,7 +28,7 @@ public class CtrlMNT implements Runnable {
 		if ((msDoc = ms.first()) != null) {
 			this.svc.setHw(msDoc.getDouble("hw").floatValue());
 		} else {
-			System.out.println("mircoservice"+this.svc.getName()+"not found"); 
+			//System.out.println("mircoservice"+this.svc.getName()+"not found"); 
 		}
 	}
 }
