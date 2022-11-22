@@ -23,6 +23,7 @@ public class CtrlMNT implements Runnable {
 
 	public void run() { 
 		MongoCollection<Document> msCol = this.msDB.getCollection("ms");
+		System.out.println(msCol.countDocuments());
 		FindIterable<Document> ms = msCol.find(Filters.eq("name", this.svc.getName()));
 		Document msDoc = null;
 		if ((msDoc = ms.first()) != null) {
