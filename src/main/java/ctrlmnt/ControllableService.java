@@ -14,6 +14,7 @@ public abstract class ControllableService {
 	public abstract Integer getUser();
 
 	public void doWork(long stime) {
+		//TODO devo aggiungere la logica per eseguire il compito sulla cpu e non solo attraverso gli sleep
 		this.ingress();
 		try {
 			ExponentialDistribution dist = new ExponentialDistribution(stime);
@@ -33,7 +34,7 @@ public abstract class ControllableService {
 
 			while (d > 0) {
 				long st = System.nanoTime();
-				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 10l));
+				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 200000l));
 				long wt = (System.nanoTime() - st);
 				d -= wt / 1.0e6;
 
@@ -57,6 +58,5 @@ public abstract class ControllableService {
 		} finally {
 			this.egress();
 		}
-
 	}
 }
