@@ -34,7 +34,7 @@ public abstract class ControllableService {
 
 			while (d > 0) {
 				long st = System.nanoTime();
-				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 200000l));
+				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 10l));
 				long wt = (System.nanoTime() - st);
 				d -= wt / 1.0e6;
 
