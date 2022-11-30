@@ -32,11 +32,15 @@ public abstract class ControllableService {
 				d = isTime.doubleValue();
 			}
 
-			while (d > 0) {
+			while (true) {
 				long st = System.nanoTime();
-				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 10l));
+				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 100l));
 				long wt = (System.nanoTime() - st);
 				d -= wt / 1.0e6;
+				
+				if(d<=0) {
+					break;
+				}
 
 				if (usersKm1 >= hwkm1) {
 					isTime = d * (hwkm1 / usersKm1);
