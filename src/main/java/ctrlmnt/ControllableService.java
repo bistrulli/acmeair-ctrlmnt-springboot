@@ -1,7 +1,6 @@
 package ctrlmnt;
 
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 
 public abstract class ControllableService {
@@ -34,7 +33,7 @@ public abstract class ControllableService {
 
 			while (true) {
 				long st = System.nanoTime();
-				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 100l));
+				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 20l));
 				long wt = (System.nanoTime() - st);
 				d -= wt / 1.0e6;
 				
