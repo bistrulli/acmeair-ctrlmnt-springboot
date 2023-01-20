@@ -69,28 +69,28 @@ public abstract class ControllableService {
 //	}
 
 	public void doWork(long stime) {
-		this.ingress();
-		try {
-			ExponentialDistribution dist = new ExponentialDistribution(stime);
-			Double isTime = dist.sample();
-
-			double usersKm1 = this.getUser().doubleValue();
-			double hwkm1 = this.getHw().doubleValue();
-			
-			//Double isTime=Long.valueOf(stime).doubleValue();
-			Double d = null;
-			if (usersKm1 > hwkm1) {
-				d = (double) (isTime.doubleValue() * (usersKm1 / hwkm1));
-			} else {
-				d = isTime.doubleValue();
-			}
-
-			TimeUnit.MILLISECONDS.sleep(d.longValue());
-
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} finally {
-			this.egress();
-		}
+//		this.ingress();
+//		try {
+//			ExponentialDistribution dist = new ExponentialDistribution(stime);
+//			Double isTime = dist.sample();
+//
+//			double usersKm1 = this.getUser().doubleValue();
+//			double hwkm1 = this.getHw().doubleValue();
+//			
+//			//Double isTime=Long.valueOf(stime).doubleValue();
+//			Double d = null;
+//			if (usersKm1 > hwkm1) {
+//				d = (double) (isTime.doubleValue() * (usersKm1 / hwkm1));
+//			} else {
+//				d = isTime.doubleValue();
+//			}
+//
+//			TimeUnit.MILLISECONDS.sleep(d.longValue());
+//
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		} finally {
+//			this.egress();
+//		}
 	}
 }
