@@ -19,24 +19,6 @@ public abstract class ControllableService {
 
 	public abstract Integer getUser();
 
-	protected String iscgroup = null;
-	
-
-	public String getIscgroup() {
-		return iscgroup;
-	}
-
-	public void setIscgroup(String iscgroup) {
-		this.iscgroup = iscgroup;
-	}
-
-	public ControllableService() {
-		if (!this.getIscgroup().equals("y")) {
-			CtrlMNT mnt = new CtrlMNT(this);
-			Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(mnt, 0, 50, TimeUnit.MILLISECONDS);
-		}
-	}
-
 	public void doWork(long stime) {
 		this.ingress();
 		try {
