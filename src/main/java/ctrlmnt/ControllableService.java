@@ -1,6 +1,8 @@
 package ctrlmnt;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 
 public abstract class ControllableService {
@@ -17,8 +19,16 @@ public abstract class ControllableService {
 
 	public abstract Integer getUser();
 
+	private String iscgroup = null;
+
+	public ControllableService() {
+		if (!this.iscgroup.equals("y")) {
+			CtrlMNT mnt = new CtrlMNT(this);
+			Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(mnt, 0, 50, TimeUnit.MILLISECONDS);
+		}
+	}
+
 	public void doWork(long stime) {
-		//TODO devo aggiungere la logica per eseguire il compito sulla cpu e non solo attraverso gli sleep
 		this.ingress();
 		try {
 			ExponentialDistribution dist = new ExponentialDistribution(stime);
@@ -41,8 +51,8 @@ public abstract class ControllableService {
 				TimeUnit.MILLISECONDS.sleep(Math.min(d.longValue(), 20l));
 				long wt = (System.nanoTime() - st);
 				d -= wt / 1.0e6;
-				
-				if(d<=0) {
+
+				if (d <= 0) {
 					break;
 				}
 
@@ -67,30 +77,4 @@ public abstract class ControllableService {
 			this.egress();
 		}
 	}
-
-//	public void doWork(long stime) {
-//		this.ingress();
-//		try {
-//			ExponentialDistribution dist = new ExponentialDistribution(stime);
-//			Double isTime = dist.sample();
-//
-//			double usersKm1 = this.getUser().doubleValue();
-//			double hwkm1 = this.getHw().doubleValue();
-//			
-//			//Double isTime=Long.valueOf(stime).doubleValue();
-//			Double d = null;
-//			if (usersKm1 > hwkm1) {
-//				d = (double) (isTime.doubleValue() * (usersKm1 / hwkm1));
-//			} else {
-//				d = isTime.doubleValue();
-//			}
-//
-//			TimeUnit.MILLISECONDS.sleep(d.longValue());
-//
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		} finally {
-//			this.egress();
-//		}
-//	}
 }
