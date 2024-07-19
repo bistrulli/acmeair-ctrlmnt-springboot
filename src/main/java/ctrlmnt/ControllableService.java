@@ -21,7 +21,20 @@ public abstract class ControllableService {
 
 	public abstract String getIscgroup();
 
-	public void doWork(long stime) {
+    private ExponentialDistribution dist = null;
+    private ThreadMXBean mgm = null;
+
+    public void doWork(long stime) {
+        if (this.dist == null) this.dist = new ExponentialDistribution(stime);
+        if (this.mgm == null) this.mgm = ManagementFactory.getThreadMXBean();
+
+        long delay = Long.valueOf(Math.round(this.dist.sample() * 1e09));
+        long start = this.mgm.getCurrentThreadCpuTime();
+        while ((this.mgm.getCurrentThreadCpuTime() - start) < delay) {
+        }
+    }
+
+	public void doWorkSleep(long stime) {
 
 		if (this.getIscgroup() != "y") {
 			this.ingress();
