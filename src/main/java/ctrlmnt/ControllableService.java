@@ -27,12 +27,13 @@ public abstract class ControllableService {
     private ExponentialDistribution dist = null;
     private ThreadMXBean mgm = null;
 
+    // stime is in milliseconds (ms)
     public void doWork(long stime) {
         if (this.dist == null) this.dist = new ExponentialDistribution(stime);
         if (this.mgm == null) this.mgm = ManagementFactory.getThreadMXBean();
 
-        long delay = Long.valueOf(Math.round(this.dist.sample() * 1e09));
-        long start = this.mgm.getCurrentThreadCpuTime();
+        long delay = Long.valueOf(Math.round(this.dist.sample() * 1e06)); // ms to ns
+        long start = this.mgm.getCurrentThreadCpuTime(); // nanoseconds (ns)
         while ((this.mgm.getCurrentThreadCpuTime() - start) < delay) {
         }
     }
