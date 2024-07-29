@@ -13,7 +13,7 @@ import java.util.*;
 
 public class MonitoringThread extends Thread {
 
-    private static final Logger logger = LoggerFactory.getLogger(RestServiceApplication.class);
+    private static final Logger logger = LoggerFactory.getLogger(MonitoringThread.class.getName());
 
     public MonitoringThread() {
 
@@ -24,17 +24,17 @@ public class MonitoringThread extends Thread {
         // Every 30 seconds send metrics
         super.run();
         double step = 30d; // Seconds
-        logger.info("requestCount : {}", MSController.requestCount.get());
-        logger.info("requestCountM1 : {}", MSController.requestCountM1.get());
+        logger.info("requestCount : " + ControllableService.requestCount.get());
+        logger.info("requestCountM1 : " + ControllableService.requestCountM1.get());
 
-        logger.info("serviceTimeSum : {}", MSController.serviceTimesSum.get());
-        logger.info("serviceTimeSumM1 : {}", MSController.serviceTimesSumM1.get());
+        logger.info("serviceTimeSum : " + ControllableService.serviceTimesSum.get());
+        logger.info("serviceTimeSumM1 : " + ControllableService.serviceTimesSumM1.get());
         try {
-            double rps = (double) (MSController.requestCount.get() - MSController.requestCountM1.get()) / step;
-            double avg_st = (double) (MSController.serviceTimesSum.get() - MSController.serviceTimesSumM1.get()) / (MSController.requestCount.get() - MSController.requestCountM1.get());
+            double rps = (double) (ControllableService.requestCount.get() - ControllableService.requestCountM1.get()) / step;
+            double avg_st = (double) (ControllableService.serviceTimesSum.get() - ControllableService.serviceTimesSumM1.get()) / (ControllableService.requestCount.get() - ControllableService.requestCountM1.get());
 
-            MSController.requestCountM1.set(MSController.requestCount.get());
-            MSController.serviceTimesSumM1.set(MSController.serviceTimesSum.get());
+            ControllableService.requestCountM1.set(ControllableService.requestCount.get());
+            ControllableService.serviceTimesSumM1.set(ControllableService.serviceTimesSum.get());
 
             logger.info("rps : {}", rps);
             logger.info("avg_st : {}", avg_st);
@@ -62,7 +62,8 @@ public class MonitoringThread extends Thread {
             List<Point> pointList = new ArrayList<>();
             pointList.add(point);
 
-            ProjectName name = ProjectName.of(Project.getProjectId());
+
+            ProjectName name = ProjectName.of("my-microservice-test-project");
 
             // Fetch pod name from environment variable
             String podName = System.getenv("POD_NAME"); // Assumes POD_NAME is set via Kubernetes Downward API
@@ -81,7 +82,7 @@ public class MonitoringThread extends Thread {
 
             // Prepares the monitored resource descriptor
             Map<String, String> resourceLabels = new HashMap<>();
-            resourceLabels.put("project_id", Project.getProjectId());
+            resourceLabels.put("project_id", "my-microservice-test-project");
             MonitoredResource resource = MonitoredResource.newBuilder()
                     .setType("global")
                     .putAllLabels(resourceLabels)

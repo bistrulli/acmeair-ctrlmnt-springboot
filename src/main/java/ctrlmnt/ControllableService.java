@@ -8,6 +8,9 @@ import java.lang.management.ThreadMXBean;
 import java.util.concurrent.*;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 public abstract class ControllableService {
 
     public abstract Float getHw();
@@ -26,6 +29,14 @@ public abstract class ControllableService {
 
     private ExponentialDistribution dist = null;
     private ThreadMXBean mgm = null;
+
+    // For the custom metrics
+    public static AtomicInteger requestCount = new AtomicInteger(0);
+    public static AtomicInteger requestCountM1 = new AtomicInteger(0); // Previous step req count
+    public static AtomicInteger activeRequests = new AtomicInteger(0); // Previous step req count
+
+    public static AtomicLong serviceTimesSum = new AtomicLong(0);
+    public static AtomicLong serviceTimesSumM1 = new AtomicLong(0);
 
     // stime is in milliseconds (ms)
     public void doWork(long stime) {
